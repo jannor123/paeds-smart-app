@@ -1,0 +1,208 @@
+{
+  "id": "vitals-age-range-flag",
+  "name": "Age-expected vital sign range (draft, chart source not cited)",
+  "version": "0.1-draft",
+  "status": "DRAFT: limits transcribed from a reference chart supplied by the clinical lead. The chart does not cite its source. Not validated. A flag means outside the chart's range, not that the child is unwell.",
+  "_ageBands": [
+    "Newborn (0 to under 1 month): under 1 months",
+    "Infant (1 to under 12 months): under 12 months",
+    "Toddler (1 to 2 years): under 36 months",
+    "Pre-school (3 to 5 years): under 72 months",
+    "School-age (6 to 12 years): under 156 months",
+    "Adolescent (13 years and over): under 216 months"
+  ],
+  "inputs": {
+    "hr": {
+      "label": "Heart rate",
+      "source": "fhir",
+      "loinc": [
+        "8867-4"
+      ],
+      "unit": "/min",
+      "acceptUnits": [
+        "/min",
+        "bpm",
+        "beats/min",
+        "{beats}/min"
+      ],
+      "plausible": [
+        10,
+        350
+      ],
+      "maxAgeMin": 30,
+      "required": true
+    },
+    "rr": {
+      "label": "Respiratory rate",
+      "source": "fhir",
+      "loinc": [
+        "9279-1"
+      ],
+      "unit": "/min",
+      "acceptUnits": [
+        "/min",
+        "brpm",
+        "breaths/min",
+        "{breaths}/min"
+      ],
+      "plausible": [
+        2,
+        150
+      ],
+      "maxAgeMin": 30,
+      "required": true
+    }
+  },
+  "context": [],
+  "levels": [
+    {
+      "id": "flag",
+      "label": "Outside age-expected range",
+      "criteria": [
+        {
+          "input": "hr",
+          "op": "gt",
+          "text": "Heart rate above the upper limit for age",
+          "value": {
+            "byAge": [
+              {
+                "upToMonths": 1,
+                "value": 160
+              },
+              {
+                "upToMonths": 12,
+                "value": 160
+              },
+              {
+                "upToMonths": 36,
+                "value": 150
+              },
+              {
+                "upToMonths": 72,
+                "value": 140
+              },
+              {
+                "upToMonths": 156,
+                "value": 120
+              },
+              {
+                "upToMonths": 216,
+                "value": 100
+              }
+            ]
+          }
+        },
+        {
+          "input": "hr",
+          "op": "lt",
+          "text": "Heart rate below the lower limit for age",
+          "value": {
+            "byAge": [
+              {
+                "upToMonths": 1,
+                "value": 110
+              },
+              {
+                "upToMonths": 12,
+                "value": 100
+              },
+              {
+                "upToMonths": 36,
+                "value": 90
+              },
+              {
+                "upToMonths": 72,
+                "value": 80
+              },
+              {
+                "upToMonths": 156,
+                "value": 70
+              },
+              {
+                "upToMonths": 216,
+                "value": 60
+              }
+            ]
+          }
+        },
+        {
+          "input": "rr",
+          "op": "gt",
+          "text": "Respiratory rate above the upper limit for age",
+          "value": {
+            "byAge": [
+              {
+                "upToMonths": 1,
+                "value": 60
+              },
+              {
+                "upToMonths": 12,
+                "value": 50
+              },
+              {
+                "upToMonths": 36,
+                "value": 35
+              },
+              {
+                "upToMonths": 72,
+                "value": 30
+              },
+              {
+                "upToMonths": 156,
+                "value": 25
+              },
+              {
+                "upToMonths": 216,
+                "value": 20
+              }
+            ]
+          }
+        },
+        {
+          "input": "rr",
+          "op": "lt",
+          "text": "Respiratory rate below the lower limit for age",
+          "value": {
+            "byAge": [
+              {
+                "upToMonths": 1,
+                "value": 30
+              },
+              {
+                "upToMonths": 12,
+                "value": 30
+              },
+              {
+                "upToMonths": 36,
+                "value": 25
+              },
+              {
+                "upToMonths": 72,
+                "value": 20
+              },
+              {
+                "upToMonths": 156,
+                "value": 18
+              },
+              {
+                "upToMonths": 216,
+                "value": 12
+              }
+            ]
+          }
+        }
+      ],
+      "actions": [
+        "[Placeholder] Action for this level to be authored by the clinical lead"
+      ]
+    },
+    {
+      "id": "within",
+      "label": "Within age-expected range",
+      "criteria": [],
+      "actions": [
+        "[Placeholder] Within range does not exclude illness. Wording and action to be authored by the clinical lead"
+      ]
+    }
+  ]
+}

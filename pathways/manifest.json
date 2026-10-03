@@ -1,0 +1,14 @@
+{
+  "pathways": [
+    {
+      "file": "pathway.json",
+      "label": "Acute asthma: severity",
+      "description": "Oxygen saturation with bedside work of breathing and speech. DRAFT: placeholder thresholds and actions."
+    },
+    {
+      "file": "pathways/vitals-reference-chart.json",
+      "label": "Vital signs: outside age-expected range",
+      "description": "Heart rate and respiratory rate against an age-banded reference chart. DRAFT: the chart does not cite its source."
+    }
+  ]
+}

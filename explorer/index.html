@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Record explorer (sandbox)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .qrow{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:10px;align-items:start}
+  input[type=search]{width:100%;font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-height:44px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;word-break:break-all}
+  td.num{text-align:right;white-space:nowrap}
+  .scroll{max-height:420px;overflow:auto}
+</style>
+</head>
+<body>
+<div class="banner"><strong>Developer tool.</strong> For looking at synthetic sandbox records only. It refuses to read any other tenant. Downloaded files from a real record would contain patient information.</div>
+<main>
+  <h1>Record explorer</h1>
+  <p class="sub" id="subtitle">Connecting to the record.</p>
+  <div id="errorBox" class="error hidden" role="alert"></div>
+
+  <div id="app" class="hidden">
+    <div class="status" id="statusBar"></div>
+
+    <div class="panel">
+      <h2>Patient</h2>
+      <div id="patientBox"></div>
+    </div>
+
+    <div class="panel">
+      <h2>What the record holds</h2>
+      <p id="progress" class="muted small"></p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Query</th><th>Result</th><th class="num">Count</th></tr></thead>
+          <tbody id="resultsBody"></tbody>
+        </table>
+      </div>
+      <div class="row"><button class="primary" id="downloadBtn" disabled>Download everything as JSON</button></div>
+    </div>
+
+    <div class="panel">
+      <h2>Search the retrieved data</h2>
+      <p class="muted small">Searches every retrieved resource for the text you type, for example "breath", "effort", "speech", "weight" or "asthma".</p>
+      <div class="qrow"><input type="search" id="q" placeholder="Type to search" aria-label="Search retrieved data"></div>
+      <div class="tablewrap scroll" style="margin-top:12px">
+        <table>
+          <thead><tr><th>Resource</th><th>Item</th><th class="num">Count</th><th>Latest</th><th>Codes</th></tr></thead>
+          <tbody id="searchBody"><tr><td colspan="5" class="muted">Nothing searched yet.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+<script src="../lib/fhir-client.min.js"></script>
+<script src="config.js"></script>
+<script src="explorer.js"></script>
+</body>
+</html>

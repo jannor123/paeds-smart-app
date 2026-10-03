@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paediatric pathway support</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="banner"><strong>Prototype.</strong> Placeholder thresholds, not clinically validated, not for patient care. Use only with synthetic sandbox data.</div>
+<main>
+  <h1>Paediatric pathway support</h1>
+  <p class="sub" id="subtitle">Connecting to the record.</p>
+
+  <div id="errorBox" class="error hidden" role="alert"></div>
+
+  <div id="app" class="hidden">
+    <div class="status" id="statusBar"></div>
+    <div class="panel" id="pathwayPanel">
+      <h2>Pathway</h2>
+      <p id="patientLine" class="muted small" style="margin-bottom:10px"></p>
+      <label for="pathwaySelect" style="margin-top:0">Choose the pathway to use for this patient</label>
+      <select id="pathwaySelect"></select>
+      <p id="pathwayDesc" class="muted small" style="margin:8px 0 0"></p>
+      <div id="pathwayError" class="error hidden" role="alert" style="margin-top:12px"></div>
+    </div>
+    <div id="loadBanner" class="error hidden" role="alert" style="margin-bottom:20px"></div>
+    <div id="work" class="hidden">
+    <div class="grid">
+      <section aria-label="Patient data">
+        <div class="panel">
+          <h2>Patient</h2>
+          <div id="demoPicker" class="hidden">
+            <label for="patientSelect" style="margin-top:0">Demo patient</label>
+            <select id="patientSelect"></select>
+          </div>
+          <div id="patientHeader"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Data from the record</h2>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>Measure</th><th>Value</th><th>Recorded</th><th>Status</th></tr></thead>
+              <tbody id="obsBody"></tbody>
+            </table>
+          </div>
+          <div class="row">
+            <button class="secondary" id="refreshBtn">Refresh from record</button>
+            <span class="muted small" id="fetchedAt"></span>
+          </div>
+          <p class="muted small" style="margin-top:12px">Observations older than the pathway's limit are flagged as stale. A stale value is still used if it points to higher severity, but it can never support a mild classification.</p>
+        </div>
+
+        <div class="panel" id="manualPanel">
+          <h2>Bedside assessment</h2>
+          <p class="muted small">These are entered here and are not written back to the record.</p>
+          <div id="manualInputs"></div>
+        </div>
+      </section>
+
+      <section aria-label="Assessment">
+        <div id="result" class="result none" aria-live="polite"></div>
+
+        <div class="panel">
+          <h2>Why this classification</h2>
+          <div id="trace"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Draft actions for this level</h2>
+          <ul id="actions" class="actions"></ul>
+        </div>
+
+        <div class="panel">
+          <h2>Your response</h2>
+          <div class="row">
+            <button class="primary" id="agreeBtn">Agree with classification</button>
+            <button class="secondary" id="disagreeBtn">Disagree</button>
+          </div>
+          <div id="disagreeBox" class="hidden">
+            <label for="reason">Reason for disagreeing</label>
+            <textarea id="reason"></textarea>
+            <div class="row"><button class="primary" id="saveDisagree">Save disagreement</button></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Audit log for this session</h2>
+          <p class="muted small">Held in this browser tab only and lost when it closes. Download it if you need to keep it. A production version would write to a server-side audit store.</p>
+          <ul id="log" class="log"><li class="muted">No entries yet.</li></ul>
+          <div class="row"><button class="secondary" id="downloadLog" disabled>Download log as JSON</button></div>
+        </div>
+
+        <div class="panel">
+          <h2>Connection details</h2>
+          <details>
+            <summary>Show what the app asked for and what it got</summary>
+            <pre id="diagBody"></pre>
+          </details>
+        </div>
+
+        <div class="panel">
+          <h2>Pathway definition</h2>
+          <details>
+            <summary>Show rules file (pathway.json)</summary>
+            <pre id="defJson"></pre>
+          </details>
+        </div>
+      </section>
+    </div>
+    </div>
+  </div>
+</main>
+
+<script src="lib/fhir-client.min.js"></script>
+<script src="config.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

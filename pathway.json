@@ -1,0 +1,79 @@
+{
+  "id": "asthma-acute-severity",
+  "name": "Acute asthma: severity",
+  "version": "0.1-draft",
+  "status": "DRAFT: thresholds and actions are placeholders for the clinical lead to author",
+  "inputs": {
+    "spo2": {
+      "label": "Oxygen saturation",
+      "source": "fhir",
+      "loinc": ["59408-5", "2708-6"],
+      "unit": "%",
+      "acceptUnits": ["%"],
+      "plausible": [0, 100],
+      "maxAgeMin": 30,
+      "required": true
+    },
+    "wob": {
+      "label": "Work of breathing",
+      "source": "manual",
+      "required": true,
+      "options": [
+        { "v": "mild", "t": "Normal or mildly increased" },
+        { "v": "moderate", "t": "Moderately increased" },
+        { "v": "severe", "t": "Severely increased" }
+      ]
+    },
+    "speech": {
+      "label": "Speech",
+      "source": "manual",
+      "required": true,
+      "options": [
+        { "v": "sentences", "t": "Full sentences" },
+        { "v": "phrases", "t": "Short phrases" },
+        { "v": "words", "t": "Single words or unable" }
+      ]
+    }
+  },
+  "context": [
+    { "key": "rr", "label": "Respiratory rate", "loinc": ["9279-1"], "unit": "/min" },
+    { "key": "hr", "label": "Heart rate", "loinc": ["8867-4"], "unit": "/min" }
+  ],
+  "levels": [
+    {
+      "id": "severe",
+      "label": "Severe",
+      "criteria": [
+        { "input": "spo2", "op": "lt", "value": 90, "text": "Oxygen saturation below 90%" },
+        { "input": "wob", "op": "eq", "value": "severe", "text": "Work of breathing severely increased" },
+        { "input": "speech", "op": "eq", "value": "words", "text": "Speaking single words or unable" }
+      ],
+      "actions": [
+        "[Placeholder] Escalation and retrieval or transfer contact, per local pathway",
+        "[Placeholder] First-line treatment step: agent, dose and route to be authored",
+        "[Placeholder] Monitoring frequency and reassessment interval to be authored"
+      ]
+    },
+    {
+      "id": "moderate",
+      "label": "Moderate",
+      "criteria": [
+        { "input": "spo2", "op": "lt", "value": 95, "text": "Oxygen saturation below 95%" },
+        { "input": "wob", "op": "eq", "value": "moderate", "text": "Work of breathing moderately increased" },
+        { "input": "speech", "op": "eq", "value": "phrases", "text": "Speaking in short phrases" }
+      ],
+      "actions": [
+        "[Placeholder] First-line treatment step: agent, dose and route to be authored",
+        "[Placeholder] Reassessment interval and escalation trigger to be authored"
+      ]
+    },
+    {
+      "id": "mild",
+      "label": "Mild",
+      "criteria": [],
+      "actions": [
+        "[Placeholder] Treatment step and discharge or observation criteria to be authored"
+      ]
+    }
+  ]
+}

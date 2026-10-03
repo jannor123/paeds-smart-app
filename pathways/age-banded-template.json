@@ -1,0 +1,94 @@
+{
+  "id": "template-age-banded-vitals",
+  "name": "Template: age-banded vital sign flags",
+  "version": "0.0-template",
+  "status": "TEMPLATE: every limit is null and must be authored by the clinical lead. The app refuses to run it until all values are set.",
+  "_howToUse": [
+    "Each criterion's value is {\"byAge\": [...]}. A band applies when the patient's age in months is below upToMonths and at or above the previous band's upToMonths (the first band starts at 0).",
+    "Edit the upToMonths cut points freely, but they must increase and the last one must be at least 216 (18 years).",
+    "Replace every null with a number taken from your local guideline.",
+    "Operators: lt, lte, gt, gte, eq. Open the app with ?pathway=pathways/age-banded-template.json (add &demo=1 for demo patients)."
+  ],
+  "inputs": {
+    "hr": {
+      "label": "Heart rate",
+      "source": "fhir",
+      "loinc": ["8867-4"],
+      "unit": "/min",
+      "acceptUnits": ["/min", "bpm", "beats/min", "{beats}/min"],
+      "plausible": [10, 350],
+      "maxAgeMin": 30,
+      "required": true
+    },
+    "rr": {
+      "label": "Respiratory rate",
+      "source": "fhir",
+      "loinc": ["9279-1"],
+      "unit": "/min",
+      "acceptUnits": ["/min", "brpm", "breaths/min", "{breaths}/min"],
+      "plausible": [2, 150],
+      "maxAgeMin": 30,
+      "required": true
+    }
+  },
+  "context": [],
+  "levels": [
+    {
+      "id": "flag",
+      "label": "Outside age-appropriate range",
+      "criteria": [
+        {
+          "input": "hr", "op": "gt", "text": "Heart rate above the limit for age",
+          "value": { "byAge": [
+            { "upToMonths": 12,  "value": null },
+            { "upToMonths": 36,  "value": null },
+            { "upToMonths": 72,  "value": null },
+            { "upToMonths": 144, "value": null },
+            { "upToMonths": 216, "value": null }
+          ] }
+        },
+        {
+          "input": "hr", "op": "lt", "text": "Heart rate below the limit for age",
+          "value": { "byAge": [
+            { "upToMonths": 12,  "value": null },
+            { "upToMonths": 36,  "value": null },
+            { "upToMonths": 72,  "value": null },
+            { "upToMonths": 144, "value": null },
+            { "upToMonths": 216, "value": null }
+          ] }
+        },
+        {
+          "input": "rr", "op": "gt", "text": "Respiratory rate above the limit for age",
+          "value": { "byAge": [
+            { "upToMonths": 12,  "value": null },
+            { "upToMonths": 36,  "value": null },
+            { "upToMonths": 72,  "value": null },
+            { "upToMonths": 144, "value": null },
+            { "upToMonths": 216, "value": null }
+          ] }
+        },
+        {
+          "input": "rr", "op": "lt", "text": "Respiratory rate below the limit for age",
+          "value": { "byAge": [
+            { "upToMonths": 12,  "value": null },
+            { "upToMonths": 36,  "value": null },
+            { "upToMonths": 72,  "value": null },
+            { "upToMonths": 144, "value": null },
+            { "upToMonths": 216, "value": null }
+          ] }
+        }
+      ],
+      "actions": [
+        "[Placeholder] Action for this level to be authored by the clinical lead"
+      ]
+    },
+    {
+      "id": "none",
+      "label": "Within age-appropriate range",
+      "criteria": [],
+      "actions": [
+        "[Placeholder] Action for this level to be authored by the clinical lead"
+      ]
+    }
+  ]
+}

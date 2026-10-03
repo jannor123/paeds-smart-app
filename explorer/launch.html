@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Launching explorer…</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<main>
+  <h1>Starting the record explorer</h1>
+  <p id="msg" class="sub">Connecting to the record. This page should redirect in a moment.</p>
+</main>
+<script src="../lib/fhir-client.min.js"></script>
+<script src="config.js"></script>
+<script>
+(function () {
+  var msg = document.getElementById("msg");
+  var cfg = window.EXPLORER_CONFIG;
+  var params = new URLSearchParams(location.search);
+  if (!cfg || !cfg.clientId || cfg.clientId.indexOf("REPLACE_") === 0) {
+    msg.textContent = "No client ID is set. Register the explorer as its own app in the Cerner Code Console and put its client ID in explorer/config.js.";
+    return;
+  }
+  if (!params.get("iss") || !params.get("launch")) {
+    msg.textContent = "This page must be opened by an EHR launch from the Code Console test launcher for the explorer app.";
+    return;
+  }
+  var types = [];
+  cfg.queries.forEach(function (q) { if (types.indexOf(q.type) === -1) types.push(q.type); });
+  var scope = ["patient/Patient.read"].concat(types.map(function (t) { return "patient/" + t + ".read"; }))
+    .concat(["launch", "openid", "profile"]).join(" ");
+  FHIR.oauth2.authorize({ clientId: cfg.clientId, scope: scope, redirectUri: "index.html" })
+    .catch(function (err) { msg.textContent = "The launch failed: " + (err && err.message ? err.message : err); });
+})();
+</script>
+</body>
+</html>

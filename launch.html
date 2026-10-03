@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Launching…</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>Starting the app</h1>
+  <p id="msg" class="sub">Connecting to the record. This page should redirect in a moment.</p>
+</main>
+<script src="lib/fhir-client.min.js"></script>
+<script src="config.js"></script>
+<script>
+(function () {
+  var msg = document.getElementById("msg");
+  var cfg = window.APP_CONFIG;
+  var params = new URLSearchParams(location.search);
+  if (!cfg || !cfg.clientId || cfg.clientId.indexOf("REPLACE_") === 0) {
+    msg.textContent = "No client ID is set. Register the app in the Cerner Code Console, then put the client ID in config.js.";
+    return;
+  }
+  if (!params.get("iss") || !params.get("launch")) {
+    msg.textContent = "This page must be opened by an EHR launch (PowerChart or the Code Console test launcher). It did not receive the launch parameters. To look at the app with demo data, open index.html?demo=1.";
+    return;
+  }
+  FHIR.oauth2.authorize({
+    clientId: cfg.clientId,
+    scope: cfg.scope,
+    redirectUri: cfg.redirectPage
+  }).catch(function (err) {
+    msg.textContent = "The launch failed: " + (err && err.message ? err.message : err);
+  });
+})();
+</script>
+</body>
+</html>
